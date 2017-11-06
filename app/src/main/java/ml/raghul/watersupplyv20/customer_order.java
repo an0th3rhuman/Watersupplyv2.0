@@ -25,8 +25,9 @@ public class customer_order extends AppCompatActivity {
     Button orderbutton, amountbutt;
     Integer costperlitre = 20;
     String Cno ;
-    String name=null;
-    String city = null;
+    String name;
+   String actualcost;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -52,7 +53,7 @@ public class customer_order extends AppCompatActivity {
 
             Cno = newtype ;
         }
-        Toast.makeText(this, "CNO"+Cno, Toast.LENGTH_LONG).show();
+
         Cursor res = mydb.verify_customer(Cno);
 
         if (res != null && res.getCount() > 0)
@@ -68,9 +69,11 @@ public class customer_order extends AppCompatActivity {
         phone = (TextView) findViewById(R.id.display_user_contact);
         phone.setText(Cno);
         getDateTime();
+        order();
 
     }
-        public void order (View v)
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        public void order ()
         {
 
             mydb = new DataBaseHelper(this);
@@ -78,14 +81,33 @@ public class customer_order extends AppCompatActivity {
 
 
             Integer cost = Integer.parseInt(quantity.getText().toString())*costperlitre;
-            String stringcost = cost.toString();
+            actualcost = cost.toString();
             customer_order obj = new customer_order();
+            orderbutton=(Button)findViewById(R.id.book_order_button);
+            orderbutton.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-            boolean result = mydb.insertcustorderData(Cno, obj.name,quantity.getText().toString(),stringcost);
+                            boolean result = mydb.insertcustorderData(getDateTime(),Cno,quantity.getText().toString(),actualcost);
+                            if(result)
+                            {
+                                Toast.makeText(customer_order.this, "Your order placed", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(customer_order.this,invoiceactivity.class);
+                                i.putExtra("ordercontact",Cno);
+                                startActivity(i);
+                            }
+                            else
+                            {
+                                Toast.makeText(customer_order.this, "Your order not placed", Toast.LENGTH_SHORT).show();
+                            }
 
-            Intent i = new Intent(this,invoiceactivity.class);
-            i.putExtra("ordercontact",obj.Cno);
-            startActivity(i);
+
+
+
+                        }
+                    }
+            );
 
 
 

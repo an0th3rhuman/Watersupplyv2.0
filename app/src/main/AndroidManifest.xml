@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".customer_order" />
         <activity android:name=".registered_cust" />
-        <activity android:name=".invoiceactivity"></activity>
+        <activity android:name=".invoiceactivity" />
+        <activity android:name=".Feedbackactivity"></activity>
     </application>
 
 </manifest>

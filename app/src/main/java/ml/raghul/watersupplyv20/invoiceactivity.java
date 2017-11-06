@@ -1,8 +1,10 @@
 package ml.raghul.watersupplyv20;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -12,6 +14,10 @@ public class invoiceactivity extends AppCompatActivity {
     DataBaseHelper mydb;
     Button cancelorder;
     String orderphone;
+    Cursor res1;
+    Button gofeedback;
+
+    customer_order custorderobj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,21 +29,41 @@ public class invoiceactivity extends AppCompatActivity {
         invoiquanti=(TextView)findViewById(R.id.invoicequantity);
         invoitimedate=(TextView)findViewById(R.id.invoicetimedate);
         invoicost = (TextView)findViewById(R.id.costestimated);
-        invoicost = (TextView)findViewById(R.id.invoiorderid);
+
+        invoorderid = (TextView)findViewById(R.id.invoiorderid);
 
         invoiph.setText(orderphone);
         mydb = new DataBaseHelper(this);
-        Cursor res = mydb.readcustorderdata(orderphone);
+        gofeedback = (Button)findViewById(R.id.feedback_invoice_button);
+        gofeedback.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(invoiceactivity.this,Feedbackactivity.class);
+                        i.putExtra("feedbackcontact",orderphone);
+                        startActivity(i);
+                    }
+                }
+        );
 
-        if (res != null && res.getCount() > 0)
+/*        res1 = mydb.readcustorderdata(orderphone);
+
+        if (res1 != null && res1.getCount() > 0)
         {
-            while (res.moveToNext())
+            while (res1.moveToNext())
             {
-                
+
+
+                invoiph.setText(res1.getColumnIndex("CONTACT"));
+                invoiquanti.setText(res1.getColumnIndex("QUANTITY"));
+                invoitimedate.setText(res1.getColumnIndex("ODATETIME"));
+
+
+
 
 
             }
-        }
+        }*/
     }
 
 

@@ -27,7 +27,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String cust_col_3="CITY";
     public static final String cust_col_4="TYPE";
 
-    public static final String ORDER_TABLE_NAME="Order";
+    public static final String ORDER_TABLE_NAME="Ordertable";
     public static final String order_col_1= "ORDER_ID";
     public static final String order_col_2= "ODATETIME";
     public static final String order_col_3="CONTACT";
@@ -145,7 +145,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public Cursor readcustorderdata(String Contact)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor custdata = db.rawQuery("SELECT * FROM "+ORDER_TABLE_NAME+" WHERE CONTACT="+Contact,null);
+        Cursor custdata = db.rawQuery("SELECT ORDER_ID,ODATETIME,CONTACT,QUANTITY,PAYMENT FROM "+ORDER_TABLE_NAME+" WHERE CONTACT=?" ,new String[]{Contact} ,null);
         return custdata;
     }
 
